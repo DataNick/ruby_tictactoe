@@ -1,5 +1,8 @@
+require 'pry'
+
 class Board
   attr_reader :current_player
+
   MAX_BOARD_INDEX = 2
   EMPTY_POS = ""
 
@@ -48,4 +51,76 @@ class Board
     end
     return true
   end
+
+  def winner
+    winner = winner_across
+    if winner
+      return winner
+    end
+    winner = winner_col
+    if winner
+      return winner
+    end
+    winner = winner_diagonal
+    if winner
+      return winner
+    end
+  end
+
+  def winner_across
+    for row in 0..MAX_BOARD_INDEX
+      first_symbol = @board[row][0]
+      for col in 1..MAX_BOARD_INDEX
+        if first_symbol != @board[row][col]
+          break
+        elsif col == MAX_BOARD_INDEX and first_symbol != EMPTY_POS
+          return first_symbol
+        end
+      end
+    end
+    return
+  end
+
+  def winner_col
+    for col in 0..MAX_BOARD_INDEX
+      first_symbol = @board[0][col]
+      for row in 0..MAX_BOARD_INDEX
+        if first_symbol != @board[row][col]
+          break
+        elsif row == MAX_BOARD_INDEX and first_symbol != EMPTY_POS
+          return first_symbol
+        end
+      end
+    end
+    return
+  end
+
+  def winner_diagonal
+    first_symbol = @board[0][0]
+    for index in 1..MAX_BOARD_INDEX
+      if first_symbol != @board[index][index]
+        break
+      elsif index == MAX_BOARD_INDEX and first_symbol != EMPTY_POS
+        return first_symbol
+      end
+    end
+    # binding.pry
+    first_symbol = @board[0][MAX_BOARD_INDEX]
+    row = 0
+    col = MAX_BOARD_INDEX
+    while row < MAX_BOARD_INDEX # removed <= condition since it iterated row to 3 and @board is undefined at that point
+      row = row + 1
+      col = col - 1
+      # binding.pry
+      if first_symbol != @board[row][col]
+        break
+      elsif row == MAX_BOARD_INDEX and first_symbol != EMPTY_POS
+        return first_symbol
+      end
+    end
+    return
+  end
 end
+
+
+
