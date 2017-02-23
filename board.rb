@@ -1,4 +1,5 @@
 class Board
+  attr_reader :current_player
   MAX_BOARD_INDEX = 2
   EMPTY_POS = ""
 
@@ -37,4 +38,14 @@ class Board
     end
   end
 
+  def board_full?
+    for row in 0..MAX_BOARD_INDEX
+      for col in 0..MAX_BOARD_INDEX
+        if @board[row][col] == EMPTY_POS
+          return false
+        end
+      end
+    end
+    return true
+  end
 end
